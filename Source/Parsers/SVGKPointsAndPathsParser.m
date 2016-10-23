@@ -639,17 +639,17 @@ inline BOOL SVGCurveEqualToCurve(SVGCurve curve1, SVGCurve curve2)
 {
 	// FIXME: reduce the allocations here; make one SVGCurve and update it, not multiple CGPoint's
 	
-    CGPoint p1 = [SVGKPointsAndPathsParser readCoordinatePair:scanner];
-    CGPoint coord1 = CGPointMake(p1.x+origin.x, p1.y+origin.y);
+    CGPoint c1 = [SVGKPointsAndPathsParser readCoordinatePair:scanner];
+    c1 = CGPointMake(c1.x+origin.x, c1.y+origin.y);
     [SVGKPointsAndPathsParser readCommaAndWhitespace:scanner];
     
-    CGPoint p2 = [SVGKPointsAndPathsParser readCoordinatePair:scanner];
-    CGPoint coord2 = CGPointMake(p2.x+origin.x, p2.y+origin.y);
+    CGPoint p = [SVGKPointsAndPathsParser readCoordinatePair:scanner];
+    p = CGPointMake(p.x+origin.x, p.y+origin.y);
     
     SVGCurve thisCurve;
     if (SVGCurveEqualToCurve(SVGCurveZero, prevCurve)) {
         // assume control point is coincident with the current point
-        thisCurve = SVGCurveMake(coord1.x, coord1.y, coord2.x, coord2.y, coord1.x, coord1.y);
+        thisCurve = SVGCurveMake(c1.x, c1.y, p.x, p.y, p.x, p.y);
     } else {
         // calculate the mirror of the previous control point
         CGPoint currentPoint = prevCurve.p;
